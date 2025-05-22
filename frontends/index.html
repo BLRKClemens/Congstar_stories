@@ -5,13 +5,305 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script type="text/javascript" src="https://livejs.com/live.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="tailwind.css" />
+
+  <style>
+    @font-face {
+      font-family: congstar;
+      src: url(fonts/Interstate\ Congstar\ Cond\ Black.otf);
+    }
+    html,
+    body {
+      overflow: hidden;
+    }
+    .storyContainer {
+      position: absolute;
+      top: 811px;
+      left: 237px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 53px;
+    }
+    .story {
+      position: relative;
+      width: 446px;
+      height: 211px;
+      /* background-color: blue; */
+    }
+
+    .storytext {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 60px;
+      font-family: congstar;
+      color: #62e443;
+      opacity: 0;
+      transition: color, opacity 0.5s ease-in-out;
+    }
+
+    .storytext.true {
+      color: white;
+    }
+    .storytext.visible {
+      opacity: 1;
+    }
+
+    .sticker {
+      position: absolute;
+      width: 150px;
+      transform: rotate(20deg);
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .sticker.visible {
+      opacity: 1;
+    }
+
+    .sticker.topleft {
+      top: 0;
+      left: 0;
+    }
+
+    .sticker.topright {
+      top: 0;
+      right: 0;
+      transform: rotate(30deg);
+    }
+
+    .sticker.bottomleft {
+      bottom: 0;
+      left: 0;
+      width: 170px;
+      transform: rotate(-10deg);
+    }
+
+    .sticker.bottomright {
+      bottom: 0;
+      right: 0;
+      width: 120px;
+    }
+
+    .trueStories {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .trueStories.visible {
+      opacity: 1;
+    }
+
+    .l3 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .l3.visible {
+      opacity: 1;
+    }
+
+    .stories {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .stories.visible {
+      opacity: 1;
+    }
+  </style>
+
   <script src="/socket.io/socket.io.js"></script>
 
   <body>
-    <h1>hello world!</h1>
+    <img src="img/01_Overlay/congstar_SKNPC 2025_Overlay_V1a.png" alt="" />
+    <img src="img/02_L3/congstar_SKNPC 2025_L3_V1a.png" alt="" class="l3" />
+    <img
+      src="img/03_Stories/congstar_SKNPC 2025_Stories_V1a.png"
+      class="stories"
+      alt=""
+    />
+    <div class="trueStories">
+      <img
+        src="img/03_Stories/congstar_SKNPC 2025_Stories Truth 1_V1a.png"
+        alt=""
+        class="absolute"
+      />
+      <img
+        src="img/03_Stories/congstar_SKNPC 2025_Stories Truth 3_V1a.png"
+        alt=""
+        class=""
+      />
+    </div>
+
+    <div class="storyContainer">
+      <div class="story">
+        <div class="storytext">Story 1</div>
+        <img
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Kaddi.png"
+          alt=""
+          class="sticker topleft"
+        />
+        <img
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Leon.png"
+          alt=""
+          class="sticker topright"
+        />
+        <img
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Matteo.png"
+          alt=""
+          class="sticker bottomleft"
+        />
+        <img
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Jen.png"
+          alt=""
+          class="sticker bottomright"
+        />
+      </div>
+      <div class="story">
+        <div class="storytext">Story 2</div>
+        <img
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Kaddi.png"
+          alt=""
+          class="sticker topleft"
+        />
+        <img
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Leon.png"
+          alt=""
+          class="sticker topright"
+        />
+        <img
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Matteo.png"
+          alt=""
+          class="sticker bottomleft"
+        />
+        <img
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Jen.png"
+          alt=""
+          class="sticker bottomright"
+        />
+      </div>
+      <div class="story">
+        <div class="storytext">Story 3</div>
+        <img
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Kaddi.png"
+          alt=""
+          class="sticker topleft"
+        />
+        <img
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Leon.png"
+          alt=""
+          class="sticker topright"
+        />
+        <img
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Matteo.png"
+          alt=""
+          class="sticker bottomleft"
+        />
+        <img
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Jen.png"
+          alt=""
+          class="sticker bottomright"
+        />
+      </div>
+    </div>
   </body>
-  <script src="script.js"></script>
+  <!-- <script src="script.js"></script> -->
+  <script>
+    var socket = io();
+
+    const stories = Array.from(document.querySelectorAll(".story"));
+    const trueStories = document.querySelector(".trueStories");
+    const storyTexts = document.querySelectorAll(".storytext");
+
+    let storiesVisible = false;
+    let l3Visible = false;
+    socket.on("attachLabel", (data) => {
+      if (!storiesVisible) return; //only execute when stories are visible
+      const { storyId, stickerId } = data;
+      console.log("attachLabel", storyId, stickerId);
+      stories.forEach((story) => {
+        Array.from(story.querySelectorAll(".sticker"))[
+          stickerId
+        ].classList.remove("visible");
+      });
+      const stickers = Array.from(
+        stories[storyId].querySelectorAll(".sticker")
+      );
+
+      console.log(stickers);
+      stickers[parseInt(stickerId)].classList.add("visible");
+    });
+    socket.on("hideLabel", (data) => {
+      const { stickerId } = data;
+      console.log("hideLabel", stickerId);
+      stories.forEach((story) => {
+        Array.from(story.querySelectorAll(".sticker"))[
+          stickerId
+        ].classList.remove("visible");
+      });
+    });
+    socket.on("reset", (data) => {
+      console.log("reset");
+      stories.forEach((story) => {
+        story.querySelectorAll(".sticker").forEach((sticker) => {
+          sticker.classList.remove("visible");
+        });
+        trueStories.classList.remove("visible");
+        storyTexts.forEach((storyText) => {
+          storyText.classList.remove("true");
+        });
+      });
+    });
+    socket.on("revealStories", (data) => {
+      if (!storiesVisible) return; //only execute when stories are visible
+      trueStories.classList.add("visible");
+      storyTexts.forEach((storyText, i) => {
+        if (i != 1) {
+          //storytext in the middle
+          storyText.classList.add("true");
+        }
+      });
+    });
+    socket.on("showStories", (data) => {
+      if (storiesVisible) {
+        document.querySelector(".stories").classList.remove("visible");
+        storyTexts.forEach((storyText) => {
+          storyText.classList.remove("visible");
+        });
+        storiesVisible = false;
+      } else {
+        document.querySelector(".stories").classList.add("visible");
+        storyTexts.forEach((storyText) => {
+          storyText.classList.add("visible");
+        });
+        storiesVisible = true;
+      }
+    });
+    socket.on("showL3", (data) => {
+      if (l3Visible) {
+        document.querySelector(".l3").classList.remove("visible");
+
+        l3Visible = false;
+      } else {
+        document.querySelector(".l3").classList.add("visible");
+
+        l3Visible = true;
+      }
+    });
+  </script>
 </html>

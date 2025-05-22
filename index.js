@@ -31,4 +31,34 @@ io.on("connection", (socket) => {
   console.log(
     `${socket.handshake.address} has connected to ${socket.handshake.headers.referer}!`
   );
+
+  socket.on("attachLabel", (data) => {
+    console.log("attachLabel: ", data);
+    socket.broadcast.emit("attachLabel", data);
+  });
+
+  socket.on("hideLabel", (data) => {
+    console.log("hideLabel: ", data);
+    socket.broadcast.emit("hideLabel", data);
+  });
+
+  socket.on("reset", (data) => {
+    console.log("resetLabels: ", data);
+    socket.broadcast.emit("reset", data);
+  });
+
+  socket.on("revealStories", (data) => {
+    console.log("revealStories: ", data);
+    socket.broadcast.emit("revealStories", data);
+  });
+
+  socket.on("showStories", (data) => {
+    console.log("showStories: ", data);
+    socket.broadcast.emit("showStories", data);
+  });
+
+  socket.on("showL3", (data) => {
+    console.log("showL3: ", data);
+    socket.broadcast.emit("showL3", data);
+  });
 });
