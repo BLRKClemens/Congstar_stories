@@ -343,6 +343,10 @@
           stickerId
         ].classList.remove("visible");
       });
+
+      stickerMapRevealed.forEach((story, i) => {
+        stickerMapRevealed[i][stickerId] = 0;
+      });
     });
     socket.on("reset", (data) => {
       console.log("reset");
