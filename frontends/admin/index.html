@@ -65,10 +65,54 @@
         >
       </div>
 
-      <div class="p-3 bg-gray-200 rounded-lg m-2">
-        <button onclick="attachLabel(0)" class="gray-button">Story 1</button>
-        <button onclick="attachLabel(1)" class="gray-button">Story 2</button>
-        <button onclick="attachLabel(2)" class="gray-button">Story 3</button>
+      <div
+        class="storyContainer p-3 bg-gray-200 rounded-lg m-2 flex items-center gap-2"
+      >
+        <div class="flex items-center flex-col gap-2">
+          <div>
+            <button onclick="attachLabel(0)" class="gray-button">
+              Story 1
+            </button>
+            <label class="custom-radio">
+              <input type="radio" name="lieStory" value="0" />
+              <span class="radio-mark"><span class="dot"></span></span>
+              Lie
+            </label>
+          </div>
+
+          <input type="text" value="Story 1" />
+        </div>
+
+        <div class="flex items-center flex-col gap-2">
+          <div>
+            <button onclick="attachLabel(1)" class="gray-button">
+              Story 2
+            </button>
+
+            <label class="custom-radio">
+              <input type="radio" name="lieStory" value="1" checked />
+              <span class="radio-mark"><span class="dot"></span></span>
+              Lie
+            </label>
+          </div>
+
+          <input type="text" value="Story 2" />
+        </div>
+        <div class="flex items-center flex-col gap-2">
+          <div>
+            <button onclick="attachLabel(2)" class="gray-button">
+              Story 3
+            </button>
+
+            <label class="custom-radio">
+              <input type="radio" name="lieStory" value="2" />
+              <span class="radio-mark"><span class="dot"></span></span>
+              Lie
+            </label>
+          </div>
+
+          <input type="text" value="Story 3" />
+        </div>
         <button onclick="hideLabel()" class="gray-button">Hide</button>
       </div>
 
@@ -86,7 +130,7 @@
           Reveal
         </button>
         <button
-          onclick="showStories()"
+          onclick="toggleStories()"
           class="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
         >
           Toggle Stories

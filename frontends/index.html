@@ -14,6 +14,7 @@
       font-family: congstar;
       src: url(fonts/Interstate\ Congstar\ Cond\ Black.otf);
     }
+
     html,
     body {
       overflow: hidden;
@@ -40,11 +41,14 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 60px;
+      font-size: 50px;
       font-family: congstar;
       color: #62e443;
       opacity: 0;
       transition: color, opacity 0.5s ease-in-out;
+      text-align: center;
+      overflow: hidden;
+      padding: 10px;
     }
 
     .storytext.true {
@@ -90,7 +94,7 @@
       width: 120px;
     }
 
-    .trueStories {
+    .trueStory {
       position: absolute;
       top: 0;
       left: 0;
@@ -98,7 +102,7 @@
       transition: opacity 0.5s ease-in-out;
     }
 
-    .trueStories.visible {
+    .trueStory.visible {
       opacity: 1;
     }
 
@@ -137,16 +141,21 @@
       class="stories"
       alt=""
     />
-    <div class="trueStories">
+    <div>
       <img
         src="img/03_Stories/congstar_SKNPC 2025_Stories Truth 1_V1a.png"
         alt=""
-        class="absolute"
+        class="trueStory"
+      />
+      <img
+        src="img/03_Stories/congstar_SKNPC 2025_Stories Truth 2_V1a.png"
+        alt=""
+        class="trueStory"
       />
       <img
         src="img/03_Stories/congstar_SKNPC 2025_Stories Truth 3_V1a.png"
         alt=""
-        class=""
+        class="trueStory"
       />
     </div>
 
@@ -227,14 +236,65 @@
     var socket = io();
 
     const stories = Array.from(document.querySelectorAll(".story"));
-    const trueStories = document.querySelector(".trueStories");
+    const trueStories = document.querySelectorAll(".trueStory");
     const storyTexts = document.querySelectorAll(".storytext");
 
     let storiesVisible = false;
     let l3Visible = false;
-    socket.on("attachLabel", (data) => {
-      if (!storiesVisible) return; //only execute when stories are visible
-      const { storyId, stickerId } = data;
+    let lieStoryId = 0;
+    let stickerNumber = 4;
+    let stickerMapRevealed = initStickerMap(stickerNumber);
+    console.log(stickerMapRevealed);
+
+    toggleStories();
+
+    function toggleStories() {
+      if (storiesVisible) {
+        document.querySelector(".stories").classList.remove("visible");
+        storyTexts.forEach((storyText) => {
+          storyText.classList.remove("visible");
+        });
+        unrevealStories();
+        hideStickers();
+        storiesVisible = false;
+      } else {
+        document.querySelector(".stories").classList.add("visible");
+        storyTexts.forEach((storyText) => {
+          storyText.classList.add("visible");
+        });
+        stickerMapRevealed.forEach((story, i) => {
+          story.forEach((sticker, j) => {
+            if (sticker === 1) attachLabel(i, j);
+          });
+        });
+        storiesVisible = true;
+      }
+    }
+
+    function revealStories(storyId) {
+      lieStoryId = storyId;
+      trueStories.forEach((trueStory, i) => {
+        if (i != storyId) {
+          trueStory.classList.add("visible");
+        }
+      });
+      storyTexts.forEach((storyText, i) => {
+        if (i != storyId) {
+          //storytext in the middle
+          storyText.classList.add("true");
+        }
+      });
+    }
+    function unrevealStories() {
+      trueStories.forEach((trueStory, i) => {
+        trueStory.classList.remove("visible");
+      });
+      storyTexts.forEach((storyText) => {
+        storyText.classList.remove("true");
+      });
+    }
+
+    function attachLabel(storyId, stickerId) {
       console.log("attachLabel", storyId, stickerId);
       stories.forEach((story) => {
         Array.from(story.querySelectorAll(".sticker"))[
@@ -247,6 +307,33 @@
 
       console.log(stickers);
       stickers[parseInt(stickerId)].classList.add("visible");
+
+      stickerMapRevealed.forEach((story) => {
+        story[stickerId] = 0;
+      });
+      stickerMapRevealed[storyId][stickerId] = 1;
+      console.log(stickerMapRevealed);
+    }
+    function hideStickers() {
+      stories.forEach((story) => {
+        story.querySelectorAll(".sticker").forEach((sticker) => {
+          sticker.classList.remove("visible");
+        });
+      });
+    }
+
+    function initStickerMap(stickerNumber) {
+      return [
+        new Array(stickerNumber).fill(0),
+        new Array(stickerNumber).fill(0),
+        new Array(stickerNumber).fill(0),
+      ];
+    }
+
+    socket.on("attachLabel", (data) => {
+      if (!storiesVisible) return; //only execute when stories are visible
+      const { storyId, stickerId } = data;
+      attachLabel(storyId, stickerId);
     });
     socket.on("hideLabel", (data) => {
       const { stickerId } = data;
@@ -259,40 +346,21 @@
     });
     socket.on("reset", (data) => {
       console.log("reset");
-      stories.forEach((story) => {
-        story.querySelectorAll(".sticker").forEach((sticker) => {
-          sticker.classList.remove("visible");
-        });
-        trueStories.classList.remove("visible");
-        storyTexts.forEach((storyText) => {
-          storyText.classList.remove("true");
-        });
-      });
+      hideStickers();
+
+      unrevealStories();
+      stickerMapRevealed = initStickerMap(stickerNumber);
     });
     socket.on("revealStories", (data) => {
       if (!storiesVisible) return; //only execute when stories are visible
-      trueStories.classList.add("visible");
-      storyTexts.forEach((storyText, i) => {
-        if (i != 1) {
-          //storytext in the middle
-          storyText.classList.add("true");
-        }
-      });
+
+      const { storyId } = data;
+      unrevealStories();
+
+      revealStories(storyId);
     });
-    socket.on("showStories", (data) => {
-      if (storiesVisible) {
-        document.querySelector(".stories").classList.remove("visible");
-        storyTexts.forEach((storyText) => {
-          storyText.classList.remove("visible");
-        });
-        storiesVisible = false;
-      } else {
-        document.querySelector(".stories").classList.add("visible");
-        storyTexts.forEach((storyText) => {
-          storyText.classList.add("visible");
-        });
-        storiesVisible = true;
-      }
+    socket.on("toggleStories", (data) => {
+      toggleStories();
     });
     socket.on("showL3", (data) => {
       if (l3Visible) {
@@ -304,6 +372,12 @@
 
         l3Visible = true;
       }
+    });
+
+    socket.on("changeStoryText", (data) => {
+      const { storyId, storyText } = data;
+      console.log("changeStoryText", storyId, storyText);
+      Array.from(storyTexts)[storyId].innerText = storyText;
     });
   </script>
 </html>

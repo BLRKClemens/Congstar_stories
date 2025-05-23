@@ -52,13 +52,18 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("revealStories", data);
   });
 
-  socket.on("showStories", (data) => {
-    console.log("showStories: ", data);
-    socket.broadcast.emit("showStories", data);
+  socket.on("toggleStories", (data) => {
+    console.log("toggleStories: ", data);
+    socket.broadcast.emit("toggleStories", data);
   });
 
   socket.on("showL3", (data) => {
     console.log("showL3: ", data);
     socket.broadcast.emit("showL3", data);
+  });
+
+  socket.on("changeStoryText", (data) => {
+    console.log("changeStoryText", data);
+    socket.broadcast.emit("changeStoryText", data);
   });
 });

@@ -11,3 +11,4 @@ socket.on("resetLabels", (data) => {});
 socket.on("revealStories", (data) => {});
 socket.on("showStories", (data) => {});
 socket.on("showAddon", (data) => {});
+socket.on("");

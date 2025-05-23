@@ -3,3 +3,41 @@ body {
   width: 100vw;
   height: 100vh;
 }
+
+.custom-radio {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.custom-radio input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radio-mark {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  border: 2px solid red;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: red;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.custom-radio input[type="radio"]:checked + .radio-mark .dot {
+  opacity: 1;
+}
