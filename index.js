@@ -74,7 +74,6 @@ io.on("connection", (socket) => {
   socket.on("reset", (data) => {
     console.log("resetLabels: ", data);
     serverData.storiesRevealed = false;
-    serverData.storiesVisible = false;
     serverData.l3Visible = false;
 
     serverData.stickerMapRevealed = initStickerMap(stickerNumber);
