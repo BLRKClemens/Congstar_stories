@@ -241,6 +241,7 @@
 
     let storiesVisible = false;
     let l3Visible = false;
+    let storiesRevealed = false;
     let lieStoryId = 0;
     let stickerNumber = 4;
     let stickerMapRevealed = initStickerMap(stickerNumber);
@@ -262,15 +263,18 @@
         storyTexts.forEach((storyText) => {
           storyText.classList.add("visible");
         });
-        stickerMapRevealed.forEach((story, i) => {
-          story.forEach((sticker, j) => {
-            if (sticker === 1) attachLabel(i, j);
-          });
-        });
+        if (storiesRevealed) revealStories(lieStoryId);
+        attachAllRevealedStickers();
         storiesVisible = true;
       }
     }
-
+    function attachAllRevealedStickers() {
+      stickerMapRevealed.forEach((story, i) => {
+        story.forEach((sticker, j) => {
+          if (sticker === 1) attachLabel(i, j);
+        });
+      });
+    }
     function revealStories(storyId) {
       lieStoryId = storyId;
       trueStories.forEach((trueStory, i) => {
@@ -292,6 +296,17 @@
       storyTexts.forEach((storyText) => {
         storyText.classList.remove("true");
       });
+    }
+    function toggleL3() {
+      if (l3Visible) {
+        document.querySelector(".l3").classList.remove("visible");
+
+        l3Visible = false;
+      } else {
+        document.querySelector(".l3").classList.add("visible");
+
+        l3Visible = true;
+      }
     }
 
     function attachLabel(storyId, stickerId) {
@@ -329,6 +344,40 @@
         new Array(stickerNumber).fill(0),
       ];
     }
+    function reset() {
+      console.log("reset");
+      hideStickers();
+
+      unrevealStories();
+      storiesRevealed = false;
+      stickerMapRevealed = initStickerMap(stickerNumber);
+    }
+    function changeStoryText(storyId, storyText) {
+      console.log("changeStoryText", storyId, storyText);
+      Array.from(storyTexts)[storyId].innerText = storyText;
+    }
+    function onServerConnect(serverData) {
+      function overwriteData(serverData) {
+        storiesVisible = serverData.storiesVisible;
+        l3Visible = serverData.l3Visible;
+        storiesRevealed = serverData.storiesRevealed;
+        lieStoryId = serverData.lieStoryId;
+        stickerNumber = serverData.stickerNumber;
+        stickerMapRevealed = serverData.stickerMapRevealed;
+      }
+      overwriteData(serverData);
+      toggleStories();
+      unrevealStories();
+      if (storiesRevealed && storiesVisible) revealStories(lieStoryId);
+
+      serverData.storyTexts.forEach((text, i) => {
+        changeStoryText(i, text);
+      });
+      toggleL3();
+    }
+    socket.on("serverData", (serverData) => {
+      onServerConnect(serverData);
+    });
 
     socket.on("attachLabel", (data) => {
       if (!storiesVisible) return; //only execute when stories are visible
@@ -349,39 +398,28 @@
       });
     });
     socket.on("reset", (data) => {
-      console.log("reset");
-      hideStickers();
-
-      unrevealStories();
-      stickerMapRevealed = initStickerMap(stickerNumber);
+      reset();
     });
     socket.on("revealStories", (data) => {
       if (!storiesVisible) return; //only execute when stories are visible
+      storiesRevealed = true;
 
       const { storyId } = data;
       unrevealStories();
 
       revealStories(storyId);
+      lieStoryId = storyId;
     });
     socket.on("toggleStories", (data) => {
       toggleStories();
     });
     socket.on("showL3", (data) => {
-      if (l3Visible) {
-        document.querySelector(".l3").classList.remove("visible");
-
-        l3Visible = false;
-      } else {
-        document.querySelector(".l3").classList.add("visible");
-
-        l3Visible = true;
-      }
+      toggleL3();
     });
 
     socket.on("changeStoryText", (data) => {
       const { storyId, storyText } = data;
-      console.log("changeStoryText", storyId, storyText);
-      Array.from(storyTexts)[storyId].innerText = storyText;
+      changeStoryText(storyId, storyText);
     });
   </script>
 </html>

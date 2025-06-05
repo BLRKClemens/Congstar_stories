@@ -26,44 +26,88 @@ if (publicServer) {
 const io = new Server(server);
 
 app.use(express.static("frontends"));
+function initStickerMap(stickerNumber) {
+  return [
+    new Array(stickerNumber).fill(0),
+    new Array(stickerNumber).fill(0),
+    new Array(stickerNumber).fill(0),
+  ];
+}
+const stickerNumber = 4;
+
+const serverData = {
+  storiesVisible: false,
+  l3Visible: false,
+  storiesRevealed: false,
+  lieStoryId: 0,
+  stickerNumber,
+  stickerMapRevealed: initStickerMap(stickerNumber),
+  storyTexts: ["Story 1", "Story 2", "Story 3"],
+};
 
 io.on("connection", (socket) => {
   console.log(
     `${socket.handshake.address} has connected to ${socket.handshake.headers.referer}!`
   );
 
+  socket.emit("serverData", serverData);
+
   socket.on("attachLabel", (data) => {
     console.log("attachLabel: ", data);
+    const { storyId, stickerId } = data;
+    serverData.stickerMapRevealed.forEach((story) => {
+      story[stickerId] = 0;
+    });
+    serverData.stickerMapRevealed[storyId][stickerId] = 1;
     socket.broadcast.emit("attachLabel", data);
   });
 
   socket.on("hideLabel", (data) => {
     console.log("hideLabel: ", data);
+    const { stickerId } = data;
+    serverData.stickerMapRevealed.forEach((story) => {
+      story[stickerId] = 0;
+    });
     socket.broadcast.emit("hideLabel", data);
   });
 
   socket.on("reset", (data) => {
     console.log("resetLabels: ", data);
+    serverData.storiesRevealed = false;
+    serverData.storiesVisible = false;
+    serverData.l3Visible = false;
+
+    serverData.stickerMapRevealed = initStickerMap(stickerNumber);
+
     socket.broadcast.emit("reset", data);
   });
 
   socket.on("revealStories", (data) => {
     console.log("revealStories: ", data);
+    const { storyId } = data;
+
+    serverData.storiesRevealed = true;
+    serverData.lieStoryId = storyId;
+
     socket.broadcast.emit("revealStories", data);
   });
 
   socket.on("toggleStories", (data) => {
     console.log("toggleStories: ", data);
+    serverData.storiesVisible = serverData.storiesVisible ? false : true;
     socket.broadcast.emit("toggleStories", data);
   });
 
   socket.on("showL3", (data) => {
+    serverData.l3Visible = serverData.l3Visible ? false : true;
     console.log("showL3: ", data);
     socket.broadcast.emit("showL3", data);
   });
 
   socket.on("changeStoryText", (data) => {
     console.log("changeStoryText", data);
+    const { storyId, storyText } = data;
+    serverData.storyTexts[storyId] = storyText;
     socket.broadcast.emit("changeStoryText", data);
   });
 });
