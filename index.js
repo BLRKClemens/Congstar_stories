@@ -84,6 +84,7 @@ io.on("connection", (socket) => {
   socket.on("revealStories", (data) => {
     console.log("revealStories: ", data);
     const { storyId } = data;
+    if (!serverData.storiesVisible) return;
 
     serverData.storiesRevealed = true;
     serverData.lieStoryId = storyId;
