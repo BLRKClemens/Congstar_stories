@@ -33,7 +33,7 @@ function initStickerMap(stickerNumber) {
     new Array(stickerNumber).fill(0),
   ];
 }
-const stickerNumber = 4;
+const stickerNumber = 2;
 
 const serverData = {
   storiesVisible: false,

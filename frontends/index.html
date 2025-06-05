@@ -72,7 +72,7 @@
 
     .sticker.topleft {
       top: -30px;
-      left: -61px;
+      left: -45px;
     }
 
     .sticker.topright {
@@ -163,70 +163,40 @@
       <div class="story">
         <div class="storytext">Story 1</div>
         <img
-          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Kaddi.png"
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Baso.png"
           alt=""
           class="sticker topleft"
         />
         <img
-          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Leon.png"
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Papo.png"
           alt=""
           class="sticker topright"
-        />
-        <img
-          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Matteo.png"
-          alt=""
-          class="sticker bottomleft"
-        />
-        <img
-          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Jen.png"
-          alt=""
-          class="sticker bottomright"
         />
       </div>
       <div class="story">
         <div class="storytext">Story 2</div>
         <img
-          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Kaddi.png"
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Baso.png"
           alt=""
           class="sticker topleft"
         />
         <img
-          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Leon.png"
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Papo.png"
           alt=""
           class="sticker topright"
-        />
-        <img
-          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Matteo.png"
-          alt=""
-          class="sticker bottomleft"
-        />
-        <img
-          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Jen.png"
-          alt=""
-          class="sticker bottomright"
         />
       </div>
       <div class="story">
         <div class="storytext">Story 3</div>
         <img
-          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Kaddi.png"
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Baso.png"
           alt=""
           class="sticker topleft"
         />
         <img
-          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Leon.png"
+          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Papo.png"
           alt=""
           class="sticker topright"
-        />
-        <img
-          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Matteo.png"
-          alt=""
-          class="sticker bottomleft"
-        />
-        <img
-          src="img/04_Sticker/congstar_SKNPC 2025_Name Tag_V2a_Jen.png"
-          alt=""
-          class="sticker bottomright"
         />
       </div>
     </div>
@@ -243,11 +213,12 @@
     let l3Visible = false;
     let storiesRevealed = false;
     let lieStoryId = 0;
-    let stickerNumber = 4;
+    let stickerNumber = 2;
     let stickerMapRevealed = initStickerMap(stickerNumber);
     console.log(stickerMapRevealed);
 
-    toggleStories();
+    // toggleStories();
+    // toggleL3();
 
     function toggleStories() {
       if (storiesVisible) {
@@ -358,8 +329,8 @@
     }
     function onServerConnect(serverData) {
       function overwriteData(serverData) {
-        storiesVisible = serverData.storiesVisible;
-        l3Visible = serverData.l3Visible;
+        storiesVisible = !serverData.storiesVisible;
+        l3Visible = !serverData.l3Visible;
         storiesRevealed = serverData.storiesRevealed;
         lieStoryId = serverData.lieStoryId;
         stickerNumber = serverData.stickerNumber;
